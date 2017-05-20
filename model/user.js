@@ -1,6 +1,4 @@
 var mongoose = require('mongoose');
-var validator = require('validator');
-var encrypter = require('./encrypter.js');
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -14,8 +12,8 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-const UserDb = mongoose.model('User', UserSchema);
-
+module.exports.User = mongoose.model('User', UserSchema);
+/*
 module.exports.signUp = (email, name, password) => {
   return new Promise((resolve, reject) => {
 
@@ -98,7 +96,7 @@ module.exports.signIn = (email, password) => {
   });
 };
 
-
+*/
 /*
 test
 */
