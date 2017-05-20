@@ -15,5 +15,17 @@
   "bugs": {
     "url": "https://github.com/ahmed-fathy-aly/backend-I-am-fine/issues"
   },
-  "homepage": "https://github.com/ahmed-fathy-aly/backend-I-am-fine#readme"
+  "homepage": "https://github.com/ahmed-fathy-aly/backend-I-am-fine#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "crypto-js": "^3.1.9-1",
+    "expect": "^1.20.2",
+    "express": "^4.15.2",
+    "jsonwebtoken": "^7.4.1",
+    "lodash": "^4.17.4",
+    "mocha": "^3.4.1",
+    "mongodb": "^2.2.26",
+    "mongoose": "^4.9.8",
+    "supertest": "^3.0.0"
+}
 }
