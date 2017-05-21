@@ -53,7 +53,8 @@ module.exports.signUp = (req, res) => {
     .then(user => {
         return res.send({
           ok: 1,
-          token: encrypter.idToJWT(user._id.toString())
+          token: encrypter.idToJWT(user._id.toString()),
+          id: user._id.toString()
         })
       })
 

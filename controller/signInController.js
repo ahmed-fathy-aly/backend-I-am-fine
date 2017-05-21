@@ -47,7 +47,8 @@ module.exports.signIn = (req, res) => {
       if(equalPassword) {
         res.send({
           ok: 1,
-          token: encrypter.idToJWT(foundUser._id.toString())
+          token: encrypter.idToJWT(foundUser._id.toString()),
+          id: foundUser._id.toString()
         });
       } else {
         res.send({

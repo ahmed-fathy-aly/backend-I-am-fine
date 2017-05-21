@@ -74,6 +74,7 @@ describe('sign_up', () => {
       User.findOne({email: "test2@mail.com"})
         .then(user => {
           expect(res.body.token).toEqual(encrypter.idToJWT(user._id.toString()));
+          expect(res.body.id).toEqual(user._id.toString());
           done();
         });
     });
