@@ -75,6 +75,7 @@ describe('sign_up', () => {
         .then(user => {
           expect(res.body.token).toEqual(encrypter.idToJWT(user._id.toString()));
           expect(res.body.id).toEqual(user._id.toString());
+          expect(user.lastFineTime).toExist();
           done();
         });
     });

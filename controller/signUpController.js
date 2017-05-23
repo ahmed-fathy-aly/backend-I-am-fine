@@ -44,7 +44,8 @@ module.exports.signUp = (req, res) => {
       var user = new User({
         email: email,
         name: name,
-        password: encrypedPassword
+        password: encrypedPassword,
+        lastFineTime: new Date()
       });
       return user.save();
     })
