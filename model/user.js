@@ -12,7 +12,10 @@ const UserSchema = new mongoose.Schema({
   },
   lastFineTime: {
     type: Date
-  }
+  },
+  usersAsked: [{
+    type: String
+  }]
 });
 
 module.exports.User = mongoose.model('User', UserSchema);
