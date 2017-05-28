@@ -13,9 +13,16 @@ const UserSchema = new mongoose.Schema({
   lastFineTime: {
     type: Date
   },
-  usersAsked: [{
+  usersAsked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+});
+
+const WhoAskedSchema = new mongoose.Schema({
+  askerId: {
     type: String
-  }]
+  },
+  askTime: {
+    type: Date
+  }
 });
 
 module.exports.User = mongoose.model('User', UserSchema);
