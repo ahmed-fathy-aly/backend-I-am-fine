@@ -13,12 +13,13 @@ const UserSchema = new mongoose.Schema({
   lastFineTime: {
     type: Date
   },
-  usersAsked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+  usersAsked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'WhoAsked' }]
 });
 
 const WhoAskedSchema = new mongoose.Schema({
-  askerId: {
-    type: String
+  asker: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   askTime: {
     type: Date
@@ -26,6 +27,7 @@ const WhoAskedSchema = new mongoose.Schema({
 });
 
 module.exports.User = mongoose.model('User', UserSchema);
+module.exports.WhoAsked = mongoose.model('WhoAsked', WhoAskedSchema);
 /*
 module.exports.signUp = (email, name, password) => {
   return new Promise((resolve, reject) => {
