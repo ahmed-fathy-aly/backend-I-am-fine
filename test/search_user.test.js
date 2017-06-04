@@ -7,8 +7,6 @@ var mongoose = require('mongoose');
 var {User} = require('./../model/user.js');
 var encrypter = require('./../model/encrypter.js');
 
-
-
 beforeEach((done) => {
   User.remove({})
   .then(() => {
@@ -145,9 +143,8 @@ describe('search_user', () => {
     {
       ok: 1,
       users: [
-        {id: "cccccccccccccccccccccccc", name: "abcooo", email: "user3@mail.com", lastFineTime: "2017-05-23T20:00:00.000Z"},
-        {id: "bbbbbbbbbbbbbbbbbbbbbbbb", name: "oooabcooo", email: "user2@mail.com", lastFineTime: "2017-05-23T20:00:00.000Z"}
-
+        {id: "bbbbbbbbbbbbbbbbbbbbbbbb", name: "oooabcooo", email: "user2@mail.com", lastFineTime: "2017-05-23T20:00:00.000Z"},
+        {id: "cccccccccccccccccccccccc", name: "abcooo", email: "user3@mail.com", lastFineTime: "2017-05-23T20:00:00.000Z"}
       ]
     };
     User.insertMany([user1, user2, user3, user4])

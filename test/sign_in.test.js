@@ -5,6 +5,7 @@ const request = require('supertest');
 const {app} = require('./../index.js');
 var {User} = require('./../model/user.js');
 var encrypter = require('./../model/encrypter.js');
+var mongoose = require('mongoose');
 
 
 var user1Password = "abc123";
@@ -13,19 +14,9 @@ var user1Name = "test1";
 
 beforeEach((done) => {
   User.remove({})
-  .then(()=> {
-    return encrypter.encrypt(user1Password)
-  })
-
-  .then(encrypted => {
-    var user1 = new User({email: user1Email, name: user1Name, password: encrypted});
-    return User.insertMany([user1]);
-  })
-
-  .then((users) => {
+  .then(() => {
     done();
   });
-
 });
 
 
@@ -68,32 +59,60 @@ describe('sign_in', () => {
 
   it('sign_in_success', (done) => {
 
-    request(app)
-    .post("/sign_in")
-    .send({email: user1Email,  password: user1Password})
-    .end((req, res) => {
-      expect(res.body.ok).toEqual(1);
-      User.findOne({email: user1Email})
-        .then(user => {
-          expect(res.body.token).toEqual(encrypter.idToJWT(user._id.toString()));
-          expect(res.body.id).toEqual(user._id.toString());
-          done();
-        })
+    const expected = {
+      ok: 1,
+      id: "aaaaaaaaaaaaaaaaaaaaaaaa",
+      token: encrypter.idToJWT("aaaaaaaaaaaaaaaaaaaaaaaa")
+    }
+    encrypter.encrypt(user1Password)
+    .then(encrypted => {
+      const user1 = new User({
+        _id: new mongoose.mongo.ObjectId("aaaaaaaaaaaaaaaaaaaaaaaa"),
+        email: user1Email,
+        name: user1Name,
+        password: encrypted
+      });
+      return user1.save();
+    })
+
+    .then(() => {
+      request(app)
+      .post("/sign_in")
+      .send({email: user1Email,  password: user1Password})
+      .end((req, res) => {
+        expect(res.body).toEqual(expected);
+        done();
+      });
+    })
+
+    .catch(e => {
+      console.log(e);
     });
   });
 
-  it('sign_in_fail', (done) => {
-    var email = "test1@mail.com";
-    var password = "wrong pass";
+  it('wrong_pass', (done) => {
 
-    request(app)
-    .post("/sign_in")
-    .send({email,  password})
-    .end((req, res) => {
-      expect(res.body.ok).toEqual(0);
-      expect(res.body.errors).toEqual("wrong_password");
-      done();
+    const expected = {
+      ok: 0,
+      errors: ["wrong_password"]
+    };
+    const user1 = new User({
+        email: user1Email,
+        name: user1Name,
+        password: "right pass"
+      });
+
+    user1.save()
+    .then(() => {
+      request(app)
+      .post("/sign_in")
+      .send({email: user1Email,  password: "wrong pass"})
+      .end((req, res) => {
+        expect(res.body).toEqual(expected);
+        done();
+      });
     });
   });
+
 
 });

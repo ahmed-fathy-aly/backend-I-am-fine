@@ -12,19 +12,9 @@ var user1Name = "test1";
 
 beforeEach((done) => {
   User.remove({})
-  .then(()=> {
-    return encrypter.encrypt(user1Password)
-  })
-
-  .then(encrypted => {
-    var users = [new User({email: user1Email, name: user1Name, password: encrypted})];
-    return User.insertMany(users);
-  })
-
-  .then((users) => {
+  .then(() => {
     done();
   });
-
 });
 
 describe('sign_up', () => {
@@ -53,15 +43,23 @@ describe('sign_up', () => {
   });
 
   it('sign_up_duplicate', (done) => {
-
-    request(app)
-    .post("/sign_up")
-    .send({email: user1Email, name: "any name", password: "any password"})
-    .end((req, res) => {
-      expect(res.body.ok).toEqual(0);
-      expect(res.body.errors).toEqual("duplicate_mail");
-      done();
+    const expected = {
+      ok: 0,
+      errors: ["duplicate_mail"]
+    };
+    const user1 = new User({
+        email: user1Email
     });
+
+    user1.save().then(() => {
+        request(app)
+        .post("/sign_up")
+        .send({email: user1Email, name: "any name", password: "any password"})
+        .end((req, res) => {
+          expect(res.body).toEqual(expected);
+          done();
+        });
+      });
   });
 
   it('sign_up_success', (done) => {
