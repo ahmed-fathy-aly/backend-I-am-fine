@@ -5,6 +5,7 @@ var signInController = require('./controller/signInController.js');
 var signUpController = require('./controller/signUpController.js');
 var searchUserController = require('./controller/searchUserController.js');
 var askAboutuserController = require('./controller/askAboutuserController.js');
+var whoAskedAboutMeController = require('./controller/whoAskedAboutMeController.js');
 
 config.configEnvironmentVariables();
 config.configDb();
@@ -16,6 +17,8 @@ app.post('/sign_up', signUpController.signUp);
 app.post('/sign_in', signInController.signIn);
 app.get('/search_user', searchUserController.searchUser);
 app.post('/ask_about_user', askAboutuserController.askAboutUser);
+app.get('/who_asked_about_me', whoAskedAboutMeController.whoAskedAboutMe);
+
 app.listen(process.env.PORT, () => {
   console.log(`started on port ${process.env.PORT}`);
 });
