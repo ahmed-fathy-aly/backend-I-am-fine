@@ -1,4 +1,5 @@
 var encrypter = require('./../model/encrypter.js');
+var responseHelper = require('./responseHelper.js');
 var {User} = require('./../model/user.js');
 
 module.exports.searchUser = (req, res) => {
@@ -6,13 +7,13 @@ module.exports.searchUser = (req, res) => {
   // authorize
   const token = req.query.token;
   if(!token) {
-    return res.send({ok: 0, errors: ["unauthorized"]});
+    return responseHelper.unAuthorizedResponse(res);
   }
   encrypter.JWTToId(token)
   .then(id => {
     return id;
   }, err => {
-    res.send({ok: 0, errors: ["unauthorized"]});
+    responseHelper.unAuthorizedResponse(res);
     throw null;
   })
 
@@ -20,7 +21,7 @@ module.exports.searchUser = (req, res) => {
   .then(id => {
     const userName = req.query.userName;
     if(!userName) {
-      res.send({ok: 0, errors: ["invalid_user_name"]});
+      responseHelper.singleErrorResponse(res, "invalid_user_name");
       throw null;
     } else {
       return userName;

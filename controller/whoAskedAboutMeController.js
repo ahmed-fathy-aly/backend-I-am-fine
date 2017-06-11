@@ -1,5 +1,6 @@
 var validator = require('validator');
 var encrypter = require('./../model/encrypter.js');
+var responseHelper = require('./responseHelper.js');
 var {User, WhoAsked} = require('./../model/user.js');
 
 module.exports.whoAskedAboutMe = (req, res) => {
@@ -7,14 +8,13 @@ module.exports.whoAskedAboutMe = (req, res) => {
   const token = req.query.token;
 
   if(!token) {
-    return res.send({ok: 0, errors: ["unauthorized"]});
+    return responseHelper.unAuthorizedResponse(res);
   }
   encrypter.JWTToId(token)
   .then(id => {
     return id;
   }, err => {
-    res.send({ok: 0, errors: ["unauthorized"]});
-    throw null;
+    return responseHelper.unAuthorizedResponse(res);
   })
 
   // get who asked about me
@@ -28,10 +28,7 @@ module.exports.whoAskedAboutMe = (req, res) => {
   // convert result to json response
   .then(user => {
     if(!user) {
-      res.send({
-        ok: 0,
-        errors: "invalid_id"
-      });
+      responseHelper.singleErrorResponse(res, "invalid_id");
       throw null;
     }
     whoAsked = user.usersAsked.map(entry => {

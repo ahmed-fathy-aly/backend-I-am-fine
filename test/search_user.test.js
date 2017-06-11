@@ -20,7 +20,7 @@ describe('search_user', () => {
     const expected =
     {
       ok: 0,
-      errors: ["unauthorized"]
+      error: "unauthorized"
     }
     request(app)
     .get("/search_user")
@@ -38,7 +38,7 @@ describe('search_user', () => {
     const expected =
     {
       ok: 0,
-      errors: ["unauthorized"]
+      error: "unauthorized"
     }
     request(app)
     .get("/search_user")
@@ -56,7 +56,7 @@ describe('search_user', () => {
       const expected =
       {
         ok: 0,
-        errors: ["invalid_user_name"]
+        error: "invalid_user_name"
       }
       request(app)
       .get("/search_user")

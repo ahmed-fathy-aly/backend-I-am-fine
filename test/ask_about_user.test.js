@@ -25,7 +25,7 @@ describe('ask_about_user', () => {
     const expected =
     {
       ok: 0,
-      errors: ["unauthorized"]
+      error: "unauthorized"
     }
     request(app)
     .post("/ask_about_user")
@@ -41,7 +41,7 @@ describe('ask_about_user', () => {
     const expected =
     {
       ok: 0,
-      errors: ["invalid_user_id"]
+      error: "invalid_user_id"
     }
     request(app)
     .post("/ask_about_user")

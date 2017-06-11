@@ -1,4 +1,5 @@
 var validator = require('validator');
+var responseHelper = require('./responseHelper.js');
 var encrypter = require('./../model/encrypter.js');
 var {User} = require('./../model/user.js');
 
@@ -15,10 +16,7 @@ module.exports.signIn = (req, res) => {
   if (!password || password.trim().length == 0)
     errors.push("invalid_password");
   if(errors.length > 0) {
-    return res.send({
-        ok: 0,
-        errors: errors
-      });
+    return responseHelper.multipleErrorResponse(res, errors);
   }
   var foundUser;
 
@@ -26,11 +24,8 @@ module.exports.signIn = (req, res) => {
   User.findOne({email: email})
     .then(user => {
       if (!user) {
-        res.send({
-            ok: 0,
-            errors: ["email_not_found"]
-          });
-          throw null;
+        responseHelper.multipleErrorResponse(res, ["email_not_found"]);
+        throw null;
       } else {
         return user;
       }
@@ -51,10 +46,7 @@ module.exports.signIn = (req, res) => {
           id: foundUser._id.toString()
         });
       } else {
-        res.send({
-          ok: 0,
-          errors: ["wrong_password"]
-        });
+        responseHelper.multipleErrorResponse(res, ["wrong_password"]);
       }
     })
 

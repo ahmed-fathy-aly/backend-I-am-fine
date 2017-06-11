@@ -1,4 +1,5 @@
 var validator = require('validator');
+var responseHelper = require('./responseHelper.js');
 var encrypter = require('./../model/encrypter.js');
 var {User, WhoAsked} = require('./../model/user.js');
 
@@ -9,13 +10,13 @@ module.exports.sayIAmFine = (req, res) => {
   var fineUser;
 
   if(!token) {
-    return res.send({ok: 0, errors: ["unauthorized"]});
+    return responseHelper.unAuthorizedResponse(res);
   }
   encrypter.JWTToId(token)
   .then(id => {
     return id;
   }, err => {
-    res.send({ok: 0, errors: ["unauthorized"]});
+    responseHelper.unAuthorizedResponse(res);
     throw null;
   })
 
@@ -31,7 +32,7 @@ module.exports.sayIAmFine = (req, res) => {
   .then(user => {
     // user not found
     if(!user) {
-      res.send({ok: 0, errors: ["invalid_id"]});
+      responseHelper.singleErrorResponse(res, "invalid_id");
       throw null;
     }
 

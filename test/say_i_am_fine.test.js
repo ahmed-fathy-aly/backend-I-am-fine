@@ -25,7 +25,7 @@ describe('say_i_am_fine', () => {
     const expected =
     {
       ok: 0,
-      errors: ["unauthorized"]
+      error: "unauthorized"
     }
     request(app)
     .post("/say_i_am_fine")
@@ -42,7 +42,7 @@ describe('say_i_am_fine', () => {
     const expected =
     {
       ok: 0,
-      errors: ["invalid_id"]
+      error: "invalid_id"
     }
     request(app)
     .post("/say_i_am_fine")

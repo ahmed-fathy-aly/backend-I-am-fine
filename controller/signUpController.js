@@ -1,4 +1,5 @@
 var validator = require('validator');
+var responseHelper = require('./responseHelper.js');
 var encrypter = require('./../model/encrypter.js');
 var {User} = require('./../model/user.js');
 
@@ -17,21 +18,15 @@ module.exports.signUp = (req, res) => {
   if (!password || password.trim().length == 0)
     errors.push("invalid_password");
   if(errors.length > 0) {
-    return res.send({
-        ok: 0,
-        errors: errors
-      });
+    return responseHelper.multipleErrorResponse(res, errors);
   }
 
   // check if mail already exists
   User.findOne({email: email})
     .then(user => {
       if (user) {
-        res.send({
-            ok: 0,
-            errors: ["duplicate_mail"]
-          });
-          throw null;
+        responseHelper.multipleErrorResponse(res, ["duplicate_mail"]);
+        throw null;
       }
       else {
         // encrypt the password

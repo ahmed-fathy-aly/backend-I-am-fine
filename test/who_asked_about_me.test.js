@@ -26,7 +26,7 @@ describe('who_asked_about_me', () => {
     const expected =
     {
       ok: 0,
-      errors: ["unauthorized"]
+      error: "unauthorized"
     }
     request(app)
     .get("/who_asked_about_me")
@@ -43,7 +43,7 @@ describe('who_asked_about_me', () => {
     const expected =
     {
       ok: 0,
-      errors: "invalid_id"
+      error: "invalid_id"
     };
 
     request(app)

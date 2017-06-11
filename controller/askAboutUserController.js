@@ -1,4 +1,5 @@
 var validator = require('validator');
+var responseHelper = require('./responseHelper.js');
 var encrypter = require('./../model/encrypter.js');
 var {User, WhoAsked} = require('./../model/user.js');
 
@@ -10,15 +11,15 @@ module.exports.askAboutUser = (req, res) => {
   var askedAbout;
 
   if(!token) {
-    return res.send({ok: 0, errors: ["unauthorized"]});
+      return responseHelper.unAuthorizedResponse(res);;
   }
   encrypter.JWTToId(token)
   .then(id => {
     askerId = id;
     return id;
   }, err => {
-    res.send({ok: 0, errors: ["unauthorized"]});
-    throw null;
+      responseHelper.unAuthorizedResponse(res);
+      throw null;
   })
 
   // get the user to be asked about
@@ -35,7 +36,7 @@ module.exports.askAboutUser = (req, res) => {
   .then(user => {
     // asker not found
     if(!user) {
-      res.send({ok: 0, errors: ["invalid_user_id"]});
+      responseHelper.singleErrorResponse(res,'invalid_user_id');
       throw null;
     }
 
