@@ -1,3 +1,5 @@
+var encrypter = require('./../model/encrypter.js');
+
 module.exports.multipleErrorResponse  = (res, errors) => {
   res.send({
     ok: 0,
@@ -20,5 +22,21 @@ module.exports.unknownErrorResponse = (res, e) => {
   console.log(e);
   return res.status(400).send({
     unknown_error: e
+  });
+}
+
+module.exports.authorizeRequest = (req, res) => {
+  return new Promise((resolve, reject) => {
+    const token = req.body.token || req.query.token;
+    if(!token) {
+        return module.exports.unAuthorizedResponse(res);
+    }
+
+    encrypter.JWTToId(token)
+    .then(id => {
+      resolve(id);
+    }, err => {
+        module.exports.unAuthorizedResponse(res);
+    })
   });
 }

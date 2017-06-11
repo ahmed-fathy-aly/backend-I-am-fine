@@ -4,27 +4,21 @@ var encrypter = require('./../model/encrypter.js');
 var {User, WhoAsked} = require('./../model/user.js');
 
 module.exports.askAboutUser = (req, res) => {
-
-  // authorize
-  const token = req.body.token;
   var askerId;
   var askedAbout;
 
-  if(!token) {
-      return responseHelper.unAuthorizedResponse(res);;
-  }
-  encrypter.JWTToId(token)
-  .then(id => {
-    askerId = id;
-    return id;
-  }, err => {
-      responseHelper.unAuthorizedResponse(res);
-      throw null;
-  })
+  // authorize
+  responseHelper.authorizeRequest(req, res)
 
   // get the user to be asked about
   .then(id => {
-    var userId = req.body.userId;
+    askerId = id;
+    const userId = req.body.userId;
+    if(!userId) {
+      responseHelper.singleErrorResponse(res,'invalid_user_id');
+      throw null;
+    }
+
     return User.findById(userId).populate({
         path: 'usersAsked',
         populate: {path: 'asker'}

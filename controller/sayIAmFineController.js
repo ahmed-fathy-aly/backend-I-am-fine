@@ -4,21 +4,10 @@ var encrypter = require('./../model/encrypter.js');
 var {User, WhoAsked} = require('./../model/user.js');
 
 module.exports.sayIAmFine = (req, res) => {
-
-  // authorize
-  const token = req.body.token;
   var fineUser;
 
-  if(!token) {
-    return responseHelper.unAuthorizedResponse(res);
-  }
-  encrypter.JWTToId(token)
-  .then(id => {
-    return id;
-  }, err => {
-    responseHelper.unAuthorizedResponse(res);
-    throw null;
-  })
+  // authorize
+  responseHelper.authorizeRequest(req, res)
 
   // get the user
   .then(id => {

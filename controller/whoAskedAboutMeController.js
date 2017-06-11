@@ -4,18 +4,9 @@ var responseHelper = require('./responseHelper.js');
 var {User, WhoAsked} = require('./../model/user.js');
 
 module.exports.whoAskedAboutMe = (req, res) => {
-  // authorize
-  const token = req.query.token;
 
-  if(!token) {
-    return responseHelper.unAuthorizedResponse(res);
-  }
-  encrypter.JWTToId(token)
-  .then(id => {
-    return id;
-  }, err => {
-    return responseHelper.unAuthorizedResponse(res);
-  })
+  // authorize
+  responseHelper.authorizeRequest(req, res)
 
   // get who asked about me
   .then(id => {

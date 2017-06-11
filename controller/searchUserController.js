@@ -5,17 +5,7 @@ var {User} = require('./../model/user.js');
 module.exports.searchUser = (req, res) => {
 
   // authorize
-  const token = req.query.token;
-  if(!token) {
-    return responseHelper.unAuthorizedResponse(res);
-  }
-  encrypter.JWTToId(token)
-  .then(id => {
-    return id;
-  }, err => {
-    responseHelper.unAuthorizedResponse(res);
-    throw null;
-  })
+  responseHelper.authorizeRequest(req, res)
 
   // validate fields
   .then(id => {
