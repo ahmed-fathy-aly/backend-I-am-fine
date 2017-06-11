@@ -24,7 +24,7 @@ describe('search_user', () => {
     }
     request(app)
     .get("/search_user")
-    .send({userName: "Hamada"})
+    .query({userName: "Hamada"})
     .end((req, res) => {
       expect(res.body).toEqual(expected);
       done();
@@ -42,7 +42,7 @@ describe('search_user', () => {
     }
     request(app)
     .get("/search_user")
-    .send({token: token, userName: "hamada"})
+    .query({token: token, userName: "hamada"})
     .end((req, res) => {
       expect(res.body).toEqual(expected);
       done();
@@ -60,7 +60,7 @@ describe('search_user', () => {
       }
       request(app)
       .get("/search_user")
-      .send({token: token})
+      .query({token: token})
       .end((req, res) => {
         expect(res.body).toEqual(expected);
         done();
@@ -77,7 +77,7 @@ describe('search_user', () => {
     };
     request(app)
     .get("/search_user")
-    .send({token: token, userName: "not there"})
+    .query({token: token, userName: "not there"})
     .end((req, res) => {
       expect(res.body).toEqual(expected);
       done();
@@ -103,7 +103,7 @@ describe('search_user', () => {
 
         request(app)
         .get("/search_user")
-        .send({token: token, userName: "ahmed"})
+        .query({token: token, userName: "ahmed"})
         .end((req, res) => {
           expect(res.body).toEqual(expected);
           done();
@@ -152,7 +152,7 @@ describe('search_user', () => {
 
         request(app)
         .get("/search_user")
-        .send({token: token, userName: "abc"})
+        .query({token: token, userName: "abc"})
         .end((req, res) => {
           expect(res.body).toEqual(expected);
           done();

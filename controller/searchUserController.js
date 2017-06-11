@@ -4,7 +4,7 @@ var {User} = require('./../model/user.js');
 module.exports.searchUser = (req, res) => {
 
   // authorize
-  const token = req.body.token;
+  const token = req.query.token;
   if(!token) {
     return res.send({ok: 0, errors: ["unauthorized"]});
   }
@@ -18,7 +18,7 @@ module.exports.searchUser = (req, res) => {
 
   // validate fields
   .then(id => {
-    const userName = req.body.userName;
+    const userName = req.query.userName;
     if(!userName) {
       res.send({ok: 0, errors: ["invalid_user_name"]});
       throw null;
