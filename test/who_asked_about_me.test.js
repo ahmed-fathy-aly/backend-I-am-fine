@@ -48,7 +48,7 @@ describe('who_asked_about_me', () => {
 
     request(app)
     .get("/who_asked_about_me")
-    .send({token: token})
+    .query({token: token})
     .end((req, res) => {
       expect(res.body).toEqual(expected);
       done();
@@ -116,7 +116,7 @@ describe('who_asked_about_me', () => {
 
         request(app)
         .get("/who_asked_about_me")
-        .send({token: token})
+        .query({token: token})
         .end((req, res) => {
           expect(res.body).toEqual(expected);
           done();
@@ -146,7 +146,7 @@ describe('who_asked_about_me', () => {
 
         request(app)
         .get("/who_asked_about_me")
-        .send({token: token})
+        .query({token: token})
         .end((req, res) => {
           expect(res.body).toEqual(expected);
           done();

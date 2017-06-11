@@ -4,7 +4,7 @@ var {User, WhoAsked} = require('./../model/user.js');
 
 module.exports.whoAskedAboutMe = (req, res) => {
   // authorize
-  const token = req.body.token;
+  const token = req.query.token;
 
   if(!token) {
     return res.send({ok: 0, errors: ["unauthorized"]});
