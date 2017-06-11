@@ -55,8 +55,7 @@ module.exports.sayIAmFine = (req, res) => {
 
   .catch(e => {
     if(e) {
-      console.log("Unknown error !");
-      console.log(e);
+      responseHelper.unknownErrorResponse(res, e);
     }
   })
 }

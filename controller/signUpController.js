@@ -56,9 +56,8 @@ module.exports.signUp = (req, res) => {
 
     // catch unknown error
     .catch(e => {
-      if(e){
-        console.log(`error ${e}`);
-        res.status(500).send(e);
+      if(e) {
+        responseHelper.unknownErrorResponse(res, e);
       }
     });
 }

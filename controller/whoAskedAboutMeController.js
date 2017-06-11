@@ -48,8 +48,7 @@ module.exports.whoAskedAboutMe = (req, res) => {
   // Unknown error
   .catch(e => {
     if(e) {
-      console.log("Unknown error !");
-      console.log(e);
+      responseHelper.unknownErrorResponse(res, e);
     }
-  })
+  });
 }
