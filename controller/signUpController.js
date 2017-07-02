@@ -8,6 +8,7 @@ module.exports.signUp = (req, res) => {
   var email = req.body.email;
   var name = req.body.name;
   var password = req.body.password;
+  var notificationToken = req.body.notificationToken;
 
   // validate them
   var errors = [];
@@ -40,6 +41,7 @@ module.exports.signUp = (req, res) => {
         email: email,
         name: name,
         password: encrypedPassword,
+        notificationToken: notificationToken,
         lastFineTime: new Date()
       });
       return user.save();

@@ -7,6 +7,9 @@ const UserSchema = new mongoose.Schema({
   name: {
     type: String
   },
+  notificationToken: {
+    type: String
+  },
   password: {
     type: String
   },

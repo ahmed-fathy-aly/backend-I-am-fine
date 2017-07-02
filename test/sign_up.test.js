@@ -66,7 +66,7 @@ describe('sign_up', () => {
 
     request(app)
     .post("/sign_up")
-    .send({email: "test2@mail.com", name: "test2", password: "abc123"})
+    .send({email: "test2@mail.com", name: "test2", password: "abc123", notificationToken: 'notToken'})
     .end((req, res) => {
       expect(res.body.ok).toEqual(1);
       User.findOne({email: "test2@mail.com"})
@@ -75,6 +75,7 @@ describe('sign_up', () => {
           expect(res.body.id).toEqual(user._id.toString());
           expect(user.usersAsked).toEqual([]);
           expect(user.lastFineTime).toExist();
+          expect(user.notificationToken).toEqual('notToken');
           done();
         });
     });

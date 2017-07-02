@@ -78,10 +78,13 @@ describe('sign_in', () => {
     .then(() => {
       request(app)
       .post("/sign_in")
-      .send({email: user1Email,  password: user1Password})
+      .send({email: user1Email,  password: user1Password, notificationToken: 'notToken'})
       .end((req, res) => {
         expect(res.body).toEqual(expected);
-        done();
+        User.findById(res.body.id).then(user => {
+          expect(user.notificationToken).toEqual("notToken");
+          done();
+        });
       });
     })
 

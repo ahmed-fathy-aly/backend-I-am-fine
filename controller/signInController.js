@@ -37,17 +37,24 @@ module.exports.signIn = (req, res) => {
       return encrypter.compare(password, user.password);
     })
 
-    // send reult
+    // update the notificationToken
     .then(equalPassword => {
-      if(equalPassword) {
-        res.send({
-          ok: 1,
-          token: encrypter.idToJWT(foundUser._id.toString()),
-          id: foundUser._id.toString()
-        });
-      } else {
+      if(!equalPassword) {
         responseHelper.multipleErrorResponse(res, ["wrong_password"]);
+        throw null;
+      } else {
+        const notificationToken = req.body.notificationToken;
+        foundUser.notificationToken = notificationToken;
+        return foundUser.save();
       }
+    })
+
+    .then(user => {
+      res.send({
+        ok: 1,
+        token: encrypter.idToJWT(foundUser._id.toString()),
+        id: foundUser._id.toString()
+      });
     })
 
     // catch unknown error
