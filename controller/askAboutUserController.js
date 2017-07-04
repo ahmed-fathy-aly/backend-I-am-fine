@@ -2,10 +2,13 @@ var validator = require('validator');
 var responseHelper = require('./responseHelper.js');
 var encrypter = require('./../model/encrypter.js');
 var {User, WhoAsked} = require('./../model/user.js');
+var notificationsSender = require('./../model/NotificationsSender.js');
 
 module.exports.askAboutUser = (req, res) => {
   var askerId;
   var askedAbout;
+  var askedAboutEntry;
+  var notificationToken;
 
   // authorize
   responseHelper.authorizeRequest(req, res)
@@ -36,7 +39,7 @@ module.exports.askAboutUser = (req, res) => {
 
     // create the who asked entry
     askedAbout = user;
-    var askedAboutEntry = new WhoAsked({
+    askedAboutEntry = new WhoAsked({
       asker: askerId,
       askTime: new Date()
     });
@@ -50,9 +53,26 @@ module.exports.askAboutUser = (req, res) => {
     return askedAbout.save();
   })
 
-  // done
+  // send notification to that user
   .then(() => {
     res.send({ok: 1});
+    notificationToken = askedAbout.notificationToken;
+    if (notificationToken != null) {
+      return User.findById(askerId);
+    }
+  })
+
+  .then((asker) => {
+    if(asker != null) {
+      var data = {
+           "type" : "someoneAskedAboutYou",
+           "askTime" : askedAboutEntry.askTime,
+           "userId" : asker.id.toString(),
+           "userName" : asker.name,
+           "userEmail" : asker.email
+      };
+      notificationsSender.sendNotification([notificationToken], data);
+    }
   })
 
   .catch(e => {

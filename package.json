@@ -31,6 +31,8 @@
     "mongoose": "^4.9.8",
     "supertest": "^3.0.0",
     "validator": "^7.0.0",
-    "request": "^2.18.0"
+    "request": "^2.18.0",
+    "request-promise": "^4.2.1"
+
   }
 }

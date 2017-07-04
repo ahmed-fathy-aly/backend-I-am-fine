@@ -5,6 +5,7 @@ const request = require('supertest');
 const {app} = require('./../index.js');
 var mongoose = require('mongoose');
 var {User, WhoAsked} = require('./../model/user.js');
+var notificationsSender = require('./../model/NotificationsSender.js');
 var encrypter = require('./../model/encrypter.js');
 
 beforeEach((done) => {
@@ -53,6 +54,12 @@ describe('ask_about_user', () => {
   });
 
   it('successful1', (done) => {
+
+    notificationsSender.sendNotification = (token, data) => {
+      notificationsSender.token = token;
+      notificationsSender.data = data;
+    };
+
     const token = encrypter.idToJWT("aaaaaaaaaaaaaaaaaaaaaaaa");
     const user1 = new User({
       _id: new mongoose.mongo.ObjectId('aaaaaaaaaaaaaaaaaaaaaaaa'),
@@ -62,7 +69,8 @@ describe('ask_about_user', () => {
      const user2 = new User({
        _id: new mongoose.mongo.ObjectId('bbbbbbbbbbbbbbbbbbbbbbbb'),
        email: "user2@mail.com",
-       name: "user2"
+       name: "user2",
+       notificationToken: "notificationToken"
       });
 
     const expected =
@@ -85,6 +93,13 @@ describe('ask_about_user', () => {
           .then(user => {
             expect(user.usersAsked.length).toEqual(1);
             expect(user.usersAsked[0].asker.id).toEqual("aaaaaaaaaaaaaaaaaaaaaaaa");
+
+            expect(notificationsSender.token).toEqual("notificationToken");
+            expect(notificationsSender.data.type).toEqual('someoneAskedAboutYou');
+            expect(notificationsSender.data.askTime).toExist();
+            expect(notificationsSender.data.userId).toEqual('aaaaaaaaaaaaaaaaaaaaaaaa');
+            expect(notificationsSender.data.userName).toEqual('user1');
+            expect(notificationsSender.data.userEmail).toEqual('user1@mail.com');
             done();
           })
           });
