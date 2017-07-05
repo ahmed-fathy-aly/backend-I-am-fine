@@ -96,6 +96,7 @@ describe('ask_about_user', () => {
 
             expect(notificationsSender.token).toEqual("notificationToken");
             expect(notificationsSender.data.type).toEqual('someoneAskedAboutYou');
+            expect(notificationsSender.data.receiverId).toEqual('bbbbbbbbbbbbbbbbbbbbbbbb');
             expect(notificationsSender.data.askTime).toExist();
             expect(notificationsSender.data.userId).toEqual('aaaaaaaaaaaaaaaaaaaaaaaa');
             expect(notificationsSender.data.userName).toEqual('user1');

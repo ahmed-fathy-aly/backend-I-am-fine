@@ -66,6 +66,7 @@ module.exports.askAboutUser = (req, res) => {
     if(asker != null) {
       var data = {
            "type" : "someoneAskedAboutYou",
+           "receiverId" : askedAbout._id.toString(),
            "askTime" : askedAboutEntry.askTime,
            "userId" : asker.id.toString(),
            "userName" : asker.name,
