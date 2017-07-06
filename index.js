@@ -1,5 +1,6 @@
 var config = require('./config.js');
 var express = require('express');
+var morgan = require('morgan')
 var bodyParser = require('body-parser');
 var signInController = require('./controller/signInController.js');
 var signUpController = require('./controller/signUpController.js');
@@ -13,6 +14,8 @@ config.configDb();
 
 var app = express();
 app.use(bodyParser.json());
+
+app.use(morgan('tiny'));
 
 app.post('/sign_up', signUpController.signUp);
 app.post('/sign_in', signInController.signIn);
