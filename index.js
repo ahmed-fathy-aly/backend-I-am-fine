@@ -15,7 +15,9 @@ config.configDb();
 var app = express();
 app.use(bodyParser.json());
 
-app.use(morgan('tiny'));
+if(process.env.NODE_ENV == "development") {
+  app.use(morgan('tiny'));
+}
 
 app.post('/sign_up', signUpController.signUp);
 app.post('/sign_in', signInController.signIn);
