@@ -5,6 +5,7 @@ const request = require('supertest');
 const {app} = require('./../index.js');
 var mongoose = require('mongoose');
 var {User, WhoAsked} = require('./../model/user.js');
+var notificationsSender = require('./../model/NotificationsSender.js');
 var encrypter = require('./../model/encrypter.js');
 
 beforeEach((done) => {
@@ -54,17 +55,27 @@ describe('say_i_am_fine', () => {
   });
 
   it('successful1', (done) => {
+    notificationsSender.sendNotification = (token, data) => {
+      notificationsSender.token = token;
+      notificationsSender.data = data;
+    };
+    notificationsSender.token = null;
+    notificationsSender.data = null;
+
     const token = encrypter.idToJWT("aaaaaaaaaaaaaaaaaaaaaaaa");
     const user1 = new User({
       _id: new mongoose.mongo.ObjectId('aaaaaaaaaaaaaaaaaaaaaaaa'),
+      name: "user1",
       usersAsked: [new mongoose.mongo.ObjectId('111111111111111111111111'),
       new mongoose.mongo.ObjectId('222222222222222222222222')]
     });
     var user2 = new User({
-       _id: new mongoose.mongo.ObjectId('bbbbbbbbbbbbbbbbbbbbbbbb')
+       _id: new mongoose.mongo.ObjectId('bbbbbbbbbbbbbbbbbbbbbbbb'),
+       notificationToken: "notTokenB"
       });
-      var user3 = new User({
-         _id: new mongoose.mongo.ObjectId('cccccccccccccccccccccccc')
+    var user3 = new User({
+         _id: new mongoose.mongo.ObjectId('cccccccccccccccccccccccc'),
+         notificationToken: null
         });
 
     var askedAboutEntry1 = new WhoAsked({
@@ -93,6 +104,11 @@ describe('say_i_am_fine', () => {
         .send({token: token})
         .end((req, res) => {
           expect(res.body).toEqual(expected);
+          expect(notificationsSender.token).toEqual(["notTokenB"]);
+          expect(notificationsSender.data.fineUserId).toEqual("aaaaaaaaaaaaaaaaaaaaaaaa");
+          expect(notificationsSender.data.fineUserName).toEqual("user1");
+          expect(notificationsSender.data.fineUserTime).toExist();
+
           User.findById("aaaaaaaaaaaaaaaaaaaaaaaa")
           .then(user => {
             expect(user.usersAsked).toEqual([]);
@@ -108,6 +124,12 @@ describe('say_i_am_fine', () => {
   });
 
   it('successful2', (done) => {
+    notificationsSender.sendNotification = (token, data) => {
+      notificationsSender.token = token;
+      notificationsSender.data = data;
+    };
+    notificationsSender.token = null;
+    notificationsSender.data = null;
     const token = encrypter.idToJWT("aaaaaaaaaaaaaaaaaaaaaaaa");
     const user1 = new User({
       _id: new mongoose.mongo.ObjectId('aaaaaaaaaaaaaaaaaaaaaaaa'),
@@ -125,6 +147,8 @@ describe('say_i_am_fine', () => {
         .send({token: token})
         .end((req, res) => {
           expect(res.body).toEqual(expected);
+          expect(notificationsSender.token).toEqual(null);
+          expect(notificationsSender.data).toEqual(null);
           User.findById("aaaaaaaaaaaaaaaaaaaaaaaa")
           .then(user => {
             expect(user.usersAsked).toEqual([]);

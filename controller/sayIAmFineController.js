@@ -2,9 +2,11 @@ var validator = require('validator');
 var responseHelper = require('./responseHelper.js');
 var encrypter = require('./../model/encrypter.js');
 var {User, WhoAsked} = require('./../model/user.js');
+var notificationsSender = require('./../model/NotificationsSender.js');
 
 module.exports.sayIAmFine = (req, res) => {
   var fineUser;
+  var whoAskedNotificationTokens;
 
   // authorize
   responseHelper.authorizeRequest(req, res)
@@ -26,7 +28,11 @@ module.exports.sayIAmFine = (req, res) => {
     }
 
     fineUser = user;
-    whoAskedIds = user.usersAsked.map(entry => entry._id);
+    whoAskedNotificationTokens = user.usersAsked
+                                .map(entry => entry.asker.notificationToken)
+                                .filter(token => token != null);
+    whoAskedIds = user.usersAsked
+                  .map(entry => entry._id)
     return WhoAsked.remove({_id: {$in: whoAskedIds }});
   })
 
@@ -40,6 +46,12 @@ module.exports.sayIAmFine = (req, res) => {
   // done
   .then(() => {
     res.send({ok: 1});
+    if(whoAskedNotificationTokens.length > 0) {
+      notificationsSender.sendNotification(whoAskedNotificationTokens, {
+      'fineUserId' : fineUser._id.toString(),
+      'fineUserName' : fineUser.name,
+      'fineUserTime' : fineUser.lastFineTime.toString()});
+    }
   })
 
   .catch(e => {
