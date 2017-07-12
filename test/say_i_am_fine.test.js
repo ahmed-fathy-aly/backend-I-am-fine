@@ -106,6 +106,7 @@ describe('say_i_am_fine', () => {
           expect(res.body).toEqual(expected);
           expect(notificationsSender.token).toEqual(["notTokenB"]);
           expect(notificationsSender.data.fineUserId).toEqual("aaaaaaaaaaaaaaaaaaaaaaaa");
+ 		  expect(notificationsSender.data.type).toEqual("someoneSaidIAmFine");
           expect(notificationsSender.data.fineUserName).toEqual("user1");
           expect(notificationsSender.data.fineUserTime).toExist();
 

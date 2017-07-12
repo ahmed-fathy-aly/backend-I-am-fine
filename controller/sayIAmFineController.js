@@ -48,6 +48,7 @@ module.exports.sayIAmFine = (req, res) => {
     res.send({ok: 1});
     if(whoAskedNotificationTokens.length > 0) {
       notificationsSender.sendNotification(whoAskedNotificationTokens, {
+      'type' : 'someoneSaidIAmFine',
       'fineUserId' : fineUser._id.toString(),
       'fineUserName' : fineUser.name,
       'fineUserTime' : fineUser.lastFineTime.toString()});
