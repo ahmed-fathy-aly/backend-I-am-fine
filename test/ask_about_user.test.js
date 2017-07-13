@@ -64,7 +64,8 @@ describe('ask_about_user', () => {
     const user1 = new User({
       _id: new mongoose.mongo.ObjectId('aaaaaaaaaaaaaaaaaaaaaaaa'),
       email: "user1@mail.com",
-      name: "user1"
+      name: "user1",
+      lastFineTime: new Date()
     });
      const user2 = new User({
        _id: new mongoose.mongo.ObjectId('bbbbbbbbbbbbbbbbbbbbbbbb'),
@@ -101,6 +102,8 @@ describe('ask_about_user', () => {
             expect(notificationsSender.data.userId).toEqual('aaaaaaaaaaaaaaaaaaaaaaaa');
             expect(notificationsSender.data.userName).toEqual('user1');
             expect(notificationsSender.data.userEmail).toEqual('user1@mail.com');
+            expect(notificationsSender.data.userLastFineTime).toExist();
+
             done();
           })
           });

@@ -70,7 +70,8 @@ module.exports.askAboutUser = (req, res) => {
            "askTime" : askedAboutEntry.askTime,
            "userId" : asker.id.toString(),
            "userName" : asker.name,
-           "userEmail" : asker.email
+           "userEmail" : asker.email,
+           "userLastFineTime" : asker.lastFineTime.toString()
       };
       notificationsSender.sendNotification([notificationToken], data);
     }
