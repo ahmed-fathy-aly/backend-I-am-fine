@@ -21,6 +21,7 @@ module.exports.unknownErrorResponse = (res, e) => {
   console.log("Unknown error !");
   console.log(e);
   return res.status(400).send({
+    ok: 0,
     unknown_error: e
   });
 }

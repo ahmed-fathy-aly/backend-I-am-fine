@@ -4,6 +4,7 @@ var morgan = require('morgan')
 var bodyParser = require('body-parser');
 var signInController = require('./controller/signInController.js');
 var signUpController = require('./controller/signUpController.js');
+var facebookAuthenticateController = require('./controller/facebookAuthenticateController.js');
 var searchUserController = require('./controller/searchUserController.js');
 var askAboutuserController = require('./controller/askAboutuserController.js');
 var whoAskedAboutMeController = require('./controller/whoAskedAboutMeController.js');
@@ -21,6 +22,7 @@ if(process.env.NODE_ENV == "development") {
 
 app.post('/sign_up', signUpController.signUp);
 app.post('/sign_in', signInController.signIn);
+app.post('/facebook_authenticate', facebookAuthenticateController.authenticate);
 app.get('/search_user', searchUserController.searchUser);
 app.post('/ask_about_user', askAboutuserController.askAboutUser);
 app.get('/who_asked_about_me', whoAskedAboutMeController.whoAskedAboutMe);

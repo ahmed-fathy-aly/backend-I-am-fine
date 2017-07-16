@@ -13,6 +13,12 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String
   },
+  facebookId: {
+    type: String
+  },
+  profilePicture: {
+    type: String
+  },
   lastFineTime: {
     type: Date
   },
