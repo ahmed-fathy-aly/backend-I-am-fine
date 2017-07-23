@@ -12,7 +12,8 @@ module.exports.authenticate = (req, res) => {
   facebookHelper
     .authenticateToken(facebookToken)
     .then((facebookResultRecieved, e)  => {
-      if(e != null || facebookResultRecieved.ok != 1) {
+
+    if(e != null || facebookResultRecieved.ok != 1) {
         responseHelper.singleErrorResponse(res, 'invalid_token');
         throw null;
       } else {

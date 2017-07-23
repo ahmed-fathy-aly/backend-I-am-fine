@@ -26,7 +26,7 @@ describe('facebook', () => {
       'profilePicture' : 'ahmedPP'
     });
     request(app)
-    .post("/facebookAuthenticate")
+    .post("/facebook_authenticate")
     .send({facebookToken: "faceTok", notificationToken: 'notToken'})
     .end((req, res) => {
       expect(res.body.ok).toEqual(1);
@@ -62,7 +62,7 @@ describe('facebook', () => {
     user.save()
     .then(() => {
       request(app)
-      .post("/facebookAuthenticate")
+      .post("/facebook_authenticate")
       .send({facebookToken: "faceTok", notificationToken: 'notToken'})
       .end((req, res) => {
         expect(res.body.ok).toEqual(1);
