@@ -22,7 +22,8 @@ const UserSchema = new mongoose.Schema({
   lastFineTime: {
     type: Date
   },
-  usersAsked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'WhoAsked' }]
+  usersAsked: [{ type: mongoose.Schema.Types.ObjectId, ref: 'WhoAsked' }],
+  usersAskedHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserSchema'}]
 });
 
 const WhoAskedSchema = new mongoose.Schema({
