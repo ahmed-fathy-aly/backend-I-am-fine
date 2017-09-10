@@ -63,7 +63,7 @@ function getFacebookFriends(facebookToken) {
         resolve(Array.from(users.map(item => item._id)));
       })
       .catch(e => {
-        console.log("unknown error " + e);
+        console.log("unknown error here" + e);
         resolve([]);
       })
   });

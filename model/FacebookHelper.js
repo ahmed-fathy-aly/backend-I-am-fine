@@ -46,17 +46,11 @@ module.exports.getFriends = (facebookToken) => {
           reject({'error' : 'no id found'});
         } else {
           const ids = Array.from(result.data.map(item => item.id));
-          resolve({
-            'ok': 1,
-            'ids': ids
-          });
+          resolve(ids);
          }
       })
       .catch(e => {
-        resolve({
-          'ok' : 0,
-          'error' : e
-        });
+        reject(e);
       });
   });
 }

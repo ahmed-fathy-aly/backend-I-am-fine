@@ -2,6 +2,7 @@ var validator = require('validator');
 var responseHelper = require('./responseHelper.js');
 var encrypter = require('./../model/encrypter.js');
 var {User, WhoAsked} = require('./../model/user.js');
+var SmartRec = require('./../model/SmartRec.js');
 var notificationsSender = require('./../model/NotificationsSender.js');
 
 module.exports.askAboutUser = (req, res) => {
@@ -53,6 +54,7 @@ module.exports.askAboutUser = (req, res) => {
     return askedAbout.save();
   })
 
+
   // send notification to that user
   .then(() => {
     res.send({ok: 1});
@@ -75,6 +77,11 @@ module.exports.askAboutUser = (req, res) => {
       };
       notificationsSender.sendNotification([notificationToken], data);
     }
+  })
+
+  // update smart rec
+  .then(() => {
+    return SmartRec.registerUserAsked(askerId, askedAbout._id);
   })
 
   .catch(e => {
